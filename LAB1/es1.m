@@ -23,21 +23,22 @@ kmax = 10e3;
 % create initials 
 x0 = zeros(n, 1); %(all zeros) 
 r0 = b - A*x0; %(initial residuals)
+err = Inf;
 
 % iterate
-for i = 0:1:kmax
+while err > tol
     zk = A*r0; % compute and save A*rk (faster)
     ak = ( (r0')*r0 )/( (r0')*zk ); % compute the step
     xk = x0 + ak*r0; % compute new 
     % rk = b - A*xk; 
     rk = r0 - ak*zk;
     
-    % relative norm vs tollerance
-    if norm(rk-r0, 2)/norm(rk, 2) < toll
-       break 
-    end
     
     % update values
+    err = norm(rk-r0, 2)/norm(rk, 2);
     x0 = xk; % here not usefull
     r0 = rk;
+    
 end
+
+x0
