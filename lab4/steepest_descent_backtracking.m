@@ -4,14 +4,14 @@ function [xk,fk,gradfk_norm,k,xseq,btseq] = steepest_descent_backtracking(x0,f, 
 %Serve quando la funzione è molto rumorosa (tipo funzione banana)
 %Oppure quando il minimo è 'disponibile' per un passo brevissimo
 
-    xseq = zeros(length(x0), kmax);
-    btseq = zeros(btmax);
+    xseq = [x0];
+    btseq = [];
 
     xk = x0;
     k = 0;
     gradfk_norm = norm(gradf(xk));
 
-    while k < kmax && gradfk_norm < tolgrad
+    while k < kmax && gradfk_norm > tolgrad
         pk = -gradf(xk);
         x0 = xk;
         
@@ -19,7 +19,8 @@ function [xk,fk,gradfk_norm,k,xseq,btseq] = steepest_descent_backtracking(x0,f, 
         alphak = alpha0;
         xnew = x0 + alphak*pk; 
         fnew = f(xnew);
-        while bt < btmax && fnew > f(x0) + c1*alphak*(-pk')*pk
+
+        while bt < btmax && fnew > f(x0) + c1*alphak*(gradf(x0)')*pk
             %update alpha
             alphak = rho*alphak;
             xnew = x0 + pk*alphak;
@@ -32,13 +33,7 @@ function [xk,fk,gradfk_norm,k,xseq,btseq] = steepest_descent_backtracking(x0,f, 
         gradfk_norm = norm(gradf(xk));
         k = k + 1;
         
-        xseq(:, k) = xk;
-        btseq(k) = bt;
+        xseq = [xseq, xk];
+        btseq = [btseq, bt];
     end
-
-
-
-    xseq = xseq(1:k);
-    btseq = btseq(1:k);
 end
-
