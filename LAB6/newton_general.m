@@ -30,15 +30,8 @@ function [xk,fk,gradfk_norm,k,xseq,btseq] = newton_general(x0,f,gradf,Hessf,kmax
     while k < kmax && gradfk_norm > tolgrad
         
         gradf_k = gradf(xk);
-        
-        % TESTTTTT
-        if k == 0
-            Hessf_k = Hessf(xk)
-      
-        else
-            Hessf_k = Hessf(xk);
-        end
-
+        Hessf_k = Hessf(xk);
+     
         %Hessf_k*pk = -gradf_k;
         pk = Hessf_k\(-gradf_k);
         
