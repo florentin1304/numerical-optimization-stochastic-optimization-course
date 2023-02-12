@@ -1,1 +1,1 @@
-# numerical-optimization-stochastic-optimization-course
+# Numerical Optimization for large scale problems and Stochastic Optimization
